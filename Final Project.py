@@ -23,13 +23,34 @@ def write_csv_headers():
             for item, info in data_sources.items():
                 writer.writerow([item, info["Datasource:"], info["Metric:"]])
 
-
-
 # def check_ex_ds():
 
+def add_ds():
+    path = input("Enter the path of the data source: ")
+    try:
+        with open(path, mode="r") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+        if not rows:
+            print("Error: The file is empty.")
+            return
 
-# def add_ds():
+        column_names = rows[0]
+        total_records = len(rows) - 1
 
+        print("\nDatasource structure:")
+        print(" | ".join(column_names))
+        print(f"Total records: {total_records}")
+
+        database = f"Datasource: {path} | Metric: Net Profit Margin\n"
+
+        with open("data_sources.csv", "a") as file:
+            file.write(database)
+
+    except FileNotFoundError:
+        print(f"Error: File not found at {path}")
+    except csv.Error:
+        print(f"Error: Could not read file at {path}")
 
 # def calc_m():
 def exit():
@@ -39,20 +60,10 @@ def exit():
     else:
         return None
 
-data_sources = {
-    "1": {"Datasource:": "MicrosoftLTVs2020-2023.csv", "Metric:": "Average LTV = 720$"},
-    "2": {"Datasource:": "MicrosoftLTVs2015-2019.csv", "Metric:": "Average LTV = 700$"},
-    "3": {"Datasource:": "MicrosoftLTVs2010-2014.csv", "Metric:": "Average LTV = 550$"},
-}
-
-write_csv_headers()
-
-print("Welcome user, you entered data sources database.")
-
 
 MENU_OPTIONS_SHOP = {
-    # 0: add_item,
-    # 1: add_ds,
+    # 0: check_ex_ds,
+    1: add_ds,
     # 2: calc_m,
     3: exit
 }
