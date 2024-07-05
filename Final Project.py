@@ -78,7 +78,7 @@ def exit():
 MENU_OPTIONS_SHOP = {
     0: check_ex_ds,
     1: add_ds,
-    # 2: calc_m,
+    2: calc_m,
     3: exit
 }
 
