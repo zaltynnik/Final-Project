@@ -7,6 +7,7 @@ MENU_OPTIONS = [
     '3. Calculate metric',
     '4. End the program',
 ]
+
 def get_menu_action():
     print("\n".join(MENU_OPTIONS))
     selected_option = input("Select an option: ")
@@ -14,17 +15,23 @@ def get_menu_action():
         print("Invalid option. Try again.")
         selected_option = input("Select an option: ")
     return int(selected_option) - 1
-def write_csv_headers():
-    if not os.path.exists("data_sources.csv"):
-        headers = ["Num", "Datasource", "Metric"]
-        with open("data_sources.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(headers)
-            for item, info in data_sources.items():
-                writer.writerow([item, info["Datasource:"], info["Metric:"]])
+def check_ex_ds():
+    try:
+        with open("data_sources.csv", mode="r") as file:
+            reader = csv.DictReader(file)
+            data_sources = list(reader)
+        if not data_sources:
+            print("No data sources found.")
+            return
 
-# def check_ex_ds():
+        print("\nExisting data sources:")
+        for data_source in data_sources[:3]:
+            print(f"Datasource: {data_source['Datasource']} | Metric: {data_source['Metric']}")
 
+    except FileNotFoundError:
+        print("No data sources found.")
+    except csv.Error:
+        print("Error: Could not read data sources.")
 def add_ds():
     path = input("Enter the path of the data source: ")
     try:
@@ -42,10 +49,17 @@ def add_ds():
         print(" | ".join(column_names))
         print(f"Total records: {total_records}")
 
-        database = f"Datasource: {path} | Metric: Net Profit Margin\n"
+        name = path.split("\\")[-1]
+        data_source_info = {
+            "Datasource": name,
+            "Metric": "Net Profit Margin"
+        }
 
-        with open("data_sources.csv", "a") as file:
-            file.write(database)
+        with open("data_sources.csv", mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=["Datasource", "Metric"])
+            if file.tell() == 0:
+                writer.writeheader()
+            writer.writerow(data_source_info)
 
     except FileNotFoundError:
         print(f"Error: File not found at {path}")
@@ -62,11 +76,12 @@ def exit():
 
 
 MENU_OPTIONS_SHOP = {
-    # 0: check_ex_ds,
+    0: check_ex_ds,
     1: add_ds,
     # 2: calc_m,
     3: exit
 }
+
 
 stop = []
 while len(stop) == 0:
