@@ -67,8 +67,6 @@ def add_ds():
         print(f"Error: Could not read file at {path}")
 
 def calc_m():
-    import csv
-
     def calc_m():
         with open('data_sources.csv', mode='r', newline='') as file:
             reader = csv.DictReader(file)
@@ -82,7 +80,7 @@ def calc_m():
 
             valid_datasources_names = [row[column_name].strip() for row in reader]
 
-        selected_ds = input("Select data source by copying its full name with file format: ").strip()
+        selected_ds = input("Select data source by copying its full name with file format: ")
         if selected_ds in valid_datasources_names:
             net_inc = 0
             tot_rev = 0
@@ -93,7 +91,7 @@ def calc_m():
 
                 for tot_row in reader1:
                     tot_rev += int(tot_row[' revenue'])
-
+            net_profit_margin = (net_inc / tot_rev) * 100
         else:
             print("Invalid data source.")
             return None
