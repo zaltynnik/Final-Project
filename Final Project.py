@@ -36,7 +36,7 @@ def check_ex_ds():
 def add_ds():
     path = input("Enter the path of the data source: ")
     try:
-        with open(path, mode="r") as file:
+        with open(path, "r") as file:
             reader = csv.reader(file)
             rows = list(reader)
         if not rows:
@@ -56,7 +56,7 @@ def add_ds():
             "Metric": "Net Profit Margin"
         }
 
-        with open("data_sources.csv", mode='a', newline='') as file:
+        with open("data_sources.csv", 'a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=["Datasource", "Metric"])
             if file.tell() == 0:
                 writer.writeheader()
@@ -69,7 +69,7 @@ def add_ds():
 
 
 def calc_m():
-    with open('data_sources.csv', mode='r', newline='') as file:
+    with open('data_sources.csv', 'r', newline='') as file:
         reader = csv.DictReader(file)
 
         column_name = 'Datasource'
@@ -97,9 +97,9 @@ def calc_m():
 
         # Calculate net profit margin
         net_profit_margin = (net_inc / tot_rev) * 100
-        print(f"Net Profit Margin: {net_profit_margin: }")
+        print(f"Net Profit Margin for {selected_ds} is: {net_profit_margin:.3f}")
     else:
-        print("Invalid data source.")
+        print("Invalid data source.\n")
         return None
 
 
