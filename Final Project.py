@@ -56,7 +56,7 @@ def add_ds():
             "Metric": "Net Profit Margin"
         }
 
-        with open("data_sources.csv", 'a', newline='') as file:
+        with open("data_sources.csv", "a", newline='') as file:
             writer = csv.DictWriter(file, fieldnames=["Datasource", "Metric"])
             if file.tell() == 0:
                 writer.writeheader()
@@ -69,7 +69,7 @@ def add_ds():
 
 
 def calc_m():
-    with open('data_sources.csv', 'r', newline='') as file:
+    with open("data_sources.csv", "r", newline='') as file:
         reader = csv.DictReader(file)
 
         column_name = 'Datasource'
@@ -87,10 +87,10 @@ def calc_m():
         net_inc = 0
         tot_rev = 0
 
-        with open(selected_ds, mode='r', newline='') as file1:
+        with open(selected_ds, mode="r", newline='') as file1:
             reader1 = csv.DictReader(file1)
 
-            # Calculate net income and total revenue
+            # Calculate net income, total revenue
             for row1 in reader1:
                 net_inc += int(row1[' netIncome'])
                 tot_rev += int(row1[' revenue'])
