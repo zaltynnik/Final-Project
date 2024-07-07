@@ -1,5 +1,4 @@
 import csv
-import os
 
 MENU_OPTIONS = [
     '1. Check existing information',
@@ -15,6 +14,7 @@ def get_menu_action():
         print("Invalid option. Try again.")
         selected_option = input("Select an option: ")
     return int(selected_option) - 1
+
 def check_ex_ds():
     try:
         with open("data_sources.csv", mode="r") as file:
@@ -32,6 +32,7 @@ def check_ex_ds():
         print("No data sources found.")
     except csv.Error:
         print("Error: Could not read data sources.")
+
 def add_ds():
     path = input("Enter the path of the data source: ")
     try:
@@ -66,38 +67,42 @@ def add_ds():
     except csv.Error:
         print(f"Error: Could not read file at {path}")
 
+
 def calc_m():
-    def calc_m():
-        with open('data_sources.csv', mode='r', newline='') as file:
-            reader = csv.DictReader(file)
+    with open('data_sources.csv', mode='r', newline='') as file:
+        reader = csv.DictReader(file)
 
-            column_name = 'Datasource'
+        column_name = 'Datasource'
 
-            for i in reader:
-                print(i[column_name])
+        valid_datasources_names = []
 
-            reader = csv.DictReader(file)
-
-            valid_datasources_names = [row[column_name].strip() for row in reader]
-
-        selected_ds = input("Select data source by copying its full name with file format: ")
-        if selected_ds in valid_datasources_names:
-            net_inc = 0
-            tot_rev = 0
-            with open(selected_ds, mode='r', newline='') as file1:
-                reader1 = csv.DictReader(file1)
-                for net_row in reader1:
-                    net_inc += int(net_row[' netIncome'])
-
-                for tot_row in reader1:
-                    tot_rev += int(tot_row[' revenue'])
-            net_profit_margin = (net_inc / tot_rev) * 100
-        else:
-            print("Invalid data source.")
-            return None
+        for row in reader:
+            print(row[column_name])
+            valid_datasources_names.append(row[column_name])
 
 
-# def calc_m():
+    selected_ds = input("Select data source by copying its full name with file format: ").strip()
+
+    if selected_ds in valid_datasources_names:
+        net_inc = 0
+        tot_rev = 0
+
+        with open(selected_ds, mode='r', newline='') as file1:
+            reader1 = csv.DictReader(file1)
+
+            # Calculate net income and total revenue
+            for row1 in reader1:
+                net_inc += int(row1[' netIncome'])
+                tot_rev += int(row1[' revenue'])
+
+        # Calculate net profit margin
+        net_profit_margin = (net_inc / tot_rev) * 100
+        print(f"Net Profit Margin: {net_profit_margin: }")
+    else:
+        print("Invalid data source.")
+        return None
+
+
 def exit():
     exit_value = input("Enter {yes} to exit or {no} to continue: ")
     if exit_value == "yes":
