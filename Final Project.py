@@ -9,12 +9,14 @@ MENU_OPTIONS = [
 
 def get_menu_action():
     print("\n".join(MENU_OPTIONS))
-    selected_option = input("Select an option: ")
+    selected_option = input("Select an option: ").strip()
     while selected_option not in ["1", "2", "3", "4"]:
         print("Invalid option. Try again.")
-        selected_option = input("Select an option: ")
+        selected_option = input("Select an option: ").strip()
     return int(selected_option) - 1
 
+
+# noinspection PyInterpreter
 def check_ex_ds():
     try:
         with open("data_sources.csv", mode="r") as file:
@@ -34,7 +36,7 @@ def check_ex_ds():
         print("Error: Could not read data sources.")
 
 def add_ds():
-    path = input("Enter the path of the data source: ")
+    path = input("Enter the path of the data source: ").strip()
     try:
         with open(path, "r") as file:
             reader = csv.reader(file)
@@ -97,14 +99,14 @@ def calc_m():
 
         # Calculate net profit margin
         net_profit_margin = (net_inc / tot_rev) * 100
-        print(f"Net Profit Margin for {selected_ds} is: {net_profit_margin:.3f}")
+        print(f"Net Profit Margin for {selected_ds} is: {net_profit_margin:.3f}%")
     else:
         print("Invalid data source.\n")
         return None
 
 
 def exit():
-    exit_value = input("Enter {yes} to exit or {no} to continue: ")
+    exit_value = input("Enter {yes} to exit or {no} to continue: ").lower().strip()
     if exit_value == "yes":
         stop.append(0)
     else:
